@@ -1,0 +1,25 @@
+.card-container {
+    margin: 16px;
+    max-width: 60%;
+    padding-bottom: 30px;
+}
+
+mat-card {
+    padding: 10px;
+}
+
+.example-header-image { 
+    background-image: url('https://angular.io/assets/images/logos/angular/angular.png');
+    background-size: cover;
+}
+
+mat-card-footer {
+    margin-left: 20px;
+}
+
+.post-img {
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+    margin-top: 15px;
+}
