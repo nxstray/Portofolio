@@ -1,10 +1,12 @@
 package com.beingexiled.serverBlog.service;
 
 import com.beingexiled.serverBlog.entity.Post;
-import java.util.Date;
 import com.beingexiled.serverBlog.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Date;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -17,5 +19,9 @@ public class PostServiceImpl implements PostService {
         post.setDate(new Date());
 
         return postRepository.save(post);
+    }
+
+    public List<Post> getAllPosts() {
+        return postRepository.findAll();
     }
 }

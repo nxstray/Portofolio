@@ -10,6 +10,8 @@ import com.beingexiled.serverBlog.entity.Post;
 import com.beingexiled.serverBlog.service.PostService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -24,6 +26,15 @@ public class PostController {
         try {
             Post createdPost = postService.savePost(post);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Post>> getAllPosts() {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(postService.getAllPosts());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
