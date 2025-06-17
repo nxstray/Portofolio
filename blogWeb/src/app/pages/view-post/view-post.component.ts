@@ -7,6 +7,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CommentService } from '../../service/comment.service';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-view-post',
@@ -15,7 +20,10 @@ import { MatIconModule } from '@angular/material/icon';
     MatCardModule,
     MatChipsModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   templateUrl: './view-post.component.html',
   styleUrls: ['./view-post.component.scss']
@@ -25,15 +33,41 @@ export class ViewPostComponent {
   postId: string;
   postData: any;
 
+  commentForm!: FormGroup;
+
   constructor(private postService: PostService,
     private activatedRoute: ActivatedRoute,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar,
+    private fb: FormBuilder,
+    private commentService: CommentService) {
       this.postId = this.activatedRoute.snapshot.params['id'];
     }
 
     ngOnInit() {
       console.log(this.postId);
       this.getPostById();
+
+      this.commentForm = this.fb.group({
+        postedBy: [null, Validators.required],
+        content: [null, Validators.required]
+      })
+    }
+
+    publishComment() {
+      const postedBy = this.commentForm.get('postedBy')?.value;
+      const content = this.commentForm.get('content')?.value;
+
+      this.commentService.createComment(Number(this.postId), postedBy, content).subscribe({
+        next: (res) => {
+          console.log(res);
+          this.snackBar.open("Comment added successfully", "Close");
+          this.commentForm.reset();
+          this.getPostById();
+        },
+        error: () => {
+          this.snackBar.open("Error while adding comment", "Close");
+        }
+      });
     }
 
     getPostById() {
