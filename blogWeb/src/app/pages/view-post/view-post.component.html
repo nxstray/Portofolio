@@ -20,4 +20,25 @@
             </button>
         </mat-card-actions>
     </mat-card>
+
+    <mat-card class="comment-card">
+        <mat-card-content>
+            <h4>Publish your content</h4>
+            <div>
+                <form [formGroup]="commentForm">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Content</mat-label>
+                        <textarea matInput formControlName="content"></textarea>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill">
+                        <mat-label>Posted by</mat-label>
+                        <input matInput formControlName="postedBy">
+                    </mat-form-field>
+
+                    <button mat-raised-button color="primary" style="float: right;" [disabled]="!commentForm.valid" (click)="publishComment()">Publish comment</button>
+                </form>
+            </div>
+        </mat-card-content>
+    </mat-card>
 </div>
