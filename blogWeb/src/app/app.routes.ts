@@ -19,5 +19,12 @@ export const routes: Routes = [
       import('./pages/view-all/view-all.component').then(
         (m) => m.ViewAllComponent
       ),
+  },
+  {
+    path: 'view-post/:id',
+    loadComponent: () =>
+      import('./pages/view-post/view-post.component').then(
+        (m) => m.ViewPostComponent
+      ),
   }
 ];
