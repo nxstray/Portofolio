@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
+
 
 @Service
 public class CommentService {
@@ -30,5 +32,9 @@ public class CommentService {
         comment.setCreatedAt(new Date());
 
         return commentRepository.save(comment);
+    }
+
+    public List<Comment> getCommentsByPostId(Long postId) {
+        return commentRepository.findByPostId(postId);
     }
 }
