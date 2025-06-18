@@ -1,7 +1,12 @@
 package com.beingexiled.serverBlog.service;
 
 import com.beingexiled.serverBlog.entity.Post;
+import com.beingexiled.serverBlog.entity.User;
 import com.beingexiled.serverBlog.repository.PostRepository;
+import com.beingexiled.serverBlog.repository.UserRepository;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import jakarta.persistence.EntityNotFoundException;
@@ -13,14 +18,28 @@ import java.util.Optional;
 
 @Service
 public class PostServiceImpl implements PostService {
-    // Implement methods from PostService interface here
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+
+    @Override
     public Post savePost(Post post) {
         post.setViewCount(0);
         post.setDate(new Date());
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found for email: " + email));
+        
+        if (post.getUser() != null && !post.getUser().getEmail().equals(email)) {
+            throw new SecurityException("You are not authorized to create this post.");
+        }
+        post.setUser(user);
+        
         return postRepository.save(post);
     }
 
