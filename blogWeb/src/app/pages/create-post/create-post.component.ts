@@ -73,7 +73,7 @@ export class CreatePostComponent {
       },
       error: (err) => {
         this.snackBar.open('Error creating post.', 'Close', { duration: 3000 });
-        console.error('Error creating post:', err);
+        console.error('Error creating post:', err, { duration: 3000});
       }
     });
   }
