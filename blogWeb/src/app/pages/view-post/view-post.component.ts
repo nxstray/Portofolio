@@ -32,6 +32,7 @@ export class ViewPostComponent {
 
   postId: string;
   postData: any;
+  comments: any;
 
   commentForm!: FormGroup;
 
@@ -45,6 +46,7 @@ export class ViewPostComponent {
 
     ngOnInit() {
       console.log(this.postId);
+      console.log("ViewPostComponent loaded");
       this.getPostById();
 
       this.commentForm = this.fb.group({
@@ -60,12 +62,24 @@ export class ViewPostComponent {
       this.commentService.createComment(Number(this.postId), postedBy, content).subscribe({
         next: (res) => {
           console.log(res);
-          this.snackBar.open("Comment added successfully", "Close");
+          this.snackBar.open("Comment added successfully", "Close", { duration: 3000});
           this.commentForm.reset();
-          this.getPostById();
+          this.getCommentsByPostId();
         },
         error: () => {
-          this.snackBar.open("Error while adding comment", "Close");
+          this.snackBar.open("Error while adding comment", "Close", { duration: 3000});
+        }
+      });
+    }
+
+    getCommentsByPostId() {
+      this.commentService.getAllCommentsByPostId(Number(this.postId)).subscribe({
+        next: (res) => {
+          console.log(res);
+          this.comments = res;
+        },
+        error: () => {
+          this.snackBar.open("Error while fetching comments", "Close", { duration: 3000});
         }
       });
     }
@@ -75,9 +89,10 @@ export class ViewPostComponent {
         next: (res) => {
           console.log(res);
           this.postData = res;
+          this.getCommentsByPostId();
         },
         error: () => {
-          this.snackBar.open("Error while fetching post", "Close");
+          this.snackBar.open("Error while fetching post", "Close", { duration: 3000});
         }
       });
     }
