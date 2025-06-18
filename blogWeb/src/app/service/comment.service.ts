@@ -15,7 +15,7 @@ export class CommentService {
     const params = {
       postId: postId,
       postedBy: postedBy,
-      content: content
+      content: content,
     }
     return this.http.post(BASIC_URL + `api/comments/create`, null, { params });
   }
