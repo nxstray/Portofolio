@@ -10,4 +10,6 @@ public interface PostService {
     List<Post> getAllPosts();
 
     Post getPostById(Long postId);
+
+    List<Post> searchByName(String name);
 }

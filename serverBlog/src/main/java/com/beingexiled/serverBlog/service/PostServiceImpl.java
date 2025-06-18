@@ -38,4 +38,8 @@ public class PostServiceImpl implements PostService {
            throw new EntityNotFoundException("Post not found for id: " + postId);
        }
     }
+
+    public List<Post> searchByName(String name) {
+        return postRepository.findAllByNameContainingIgnoreCase(name);
+    }
 }
