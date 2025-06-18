@@ -42,7 +42,7 @@ export class ViewAllComponent {
         this.allPosts = res;
       },
       error: () => {
-        this.snackBar.open("Error while fetching posts", "Close");
+        this.snackBar.open("Error while fetching posts", "Close", { duration: 3000});
       }
     });
   }
