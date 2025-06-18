@@ -26,5 +26,12 @@ export const routes: Routes = [
       import('./pages/view-post/view-post.component').then(
         (m) => m.ViewPostComponent
       ),
+  },
+  {
+    path: 'search-by-name',
+    loadComponent: () =>
+      import('./search-by-name/search-by-name.component').then(
+        (m) => m.SearchByNameComponent
+      ),
   }
 ];
