@@ -15,7 +15,7 @@ import com.beingexiled.serverBlog.service.CommentService;
 
 @RestController
 @RequestMapping("/api/comments")
-@CrossOrigin
+@CrossOrigin (origins = "http://localhost:4200" )
 public class CommentController {
     
     @Autowired
