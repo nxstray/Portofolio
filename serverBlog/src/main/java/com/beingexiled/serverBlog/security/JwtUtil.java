@@ -1,6 +1,7 @@
 package com.beingexiled.serverBlog.security;
 
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.Jwts;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -31,5 +32,21 @@ public class JwtUtil {
         } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
+    }
+
+    public String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
+    }
+
+    public <T> T extractClaim(String token, java.util.function.Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser()
+                .setSigningKey(jwtSecret)
+                .parseClaimsJws(token)
+                .getBody();
     }
 }
