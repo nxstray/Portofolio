@@ -20,13 +20,12 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/posts")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class PostController {
 
     @Autowired
     private PostService postService;
 
-    // CREATE
     @PostMapping
     public ResponseEntity<?> createPost(@RequestBody Post post) {
         try {
@@ -38,7 +37,6 @@ public class PostController {
         }
     }
 
-    // UPLOAD IMAGE
     @PostMapping("/{postId}/upload-image")
     public ResponseEntity<?> uploadImage(@PathVariable Long postId, @RequestParam("image") MultipartFile imageFile) {
         try {
@@ -52,7 +50,6 @@ public class PostController {
         }
     }
 
-    // READ ALL
     @GetMapping
     public ResponseEntity<?> getAllPosts() {
         try {
@@ -66,7 +63,6 @@ public class PostController {
         }
     }
 
-    // READ BY ID
     @GetMapping("/{postId}")
     public ResponseEntity<?> getPostById(@PathVariable Long postId) {
         try {
@@ -80,7 +76,6 @@ public class PostController {
         }
     }
 
-    // SEARCH
     @GetMapping("/search/{name}")
     public ResponseEntity<?> searchByName(@PathVariable String name) {
         try {
@@ -94,7 +89,6 @@ public class PostController {
         }
     }
 
-    // UPDATE
     @PutMapping("/{postId}")
     public ResponseEntity<?> updatePost(@PathVariable Long postId, @RequestBody Post postDetails) {
         try {

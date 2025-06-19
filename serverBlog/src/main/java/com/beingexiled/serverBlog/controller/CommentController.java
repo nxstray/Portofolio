@@ -17,13 +17,12 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/comments")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class CommentController {
 
     @Autowired
     private CommentService commentService;
 
-    // CREATE COMMENT
     @PostMapping("/create")
     public ResponseEntity<?> createComment(@RequestParam Long postId, @RequestParam String content) {
         try {
@@ -38,7 +37,6 @@ public class CommentController {
         }
     }
 
-    // GET COMMENTS BY POST
     @GetMapping("/{postId}")
     public ResponseEntity<?> getCommentsByPostId(@PathVariable Long postId) {
         try {
@@ -53,7 +51,6 @@ public class CommentController {
         }
     }
 
-    // UPDATE COMMENT
     @PutMapping("/{commentId}")
     public ResponseEntity<?> updateComment(@PathVariable Long commentId, @RequestParam String content) {
         try {
@@ -70,7 +67,6 @@ public class CommentController {
         }
     }
 
-    // DELETE COMMENT
     @DeleteMapping("/{commentId}")
     public ResponseEntity<?> deleteComment(@PathVariable Long commentId) {
         try {
