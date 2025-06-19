@@ -12,8 +12,8 @@ public class PostMapper {
         dto.setDate(post.getDate());
         dto.setViewCount(post.getViewCount());
         dto.setTags(post.getTags());
-        dto.setAuthorEmail(post.getUser().getEmail());
-        
+        dto.setAuthorEmail(post.getUser() != null ? post.getUser().getEmail() : null);
+    
         return dto;
     }
 }
