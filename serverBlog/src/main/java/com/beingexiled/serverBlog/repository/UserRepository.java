@@ -1,6 +1,7 @@
 package com.beingexiled.serverBlog.repository;
 
 import com.beingexiled.serverBlog.entity.User;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
