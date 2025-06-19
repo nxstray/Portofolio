@@ -42,7 +42,7 @@ public class CommentController {
             return ResponseEntity.ok(dtos);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error fetching comments: ");
+                    .body("Error fetching comments: " + e.getMessage());
         }
     }
 
