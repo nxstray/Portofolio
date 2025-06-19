@@ -34,7 +34,7 @@ public class PostServiceImpl implements PostService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found for email: " + email));
+                .orElseThrow(() -> new RuntimeException("cannot found user: " + email));
         
         if (post.getUser() != null && !post.getUser().getEmail().equals(email)) {
             throw new SecurityException("You are not authorized to create this post.");
