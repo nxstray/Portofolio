@@ -3,6 +3,10 @@ package com.beingexiled.serverBlog.controller;
 import com.beingexiled.serverBlog.entity.User;
 import com.beingexiled.serverBlog.repository.UserRepository;
 import com.beingexiled.serverBlog.security.JwtUtil;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,7 +39,7 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@RequestBody Map<String, String> payload) {
+    public ResponseEntity<?> authenticateUser(@RequestBody Map<String, String> payload, HttpServletResponse response) {
         String email = payload.get("email");
         String password = payload.get("password");
 
@@ -47,6 +51,25 @@ public class AuthController {
         }
 
         String token = jwtUtil.generateToken(email);
+
+        Cookie cookie = new Cookie("jwt", token);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(false);
+        cookie.setPath("/");
+        cookie.setMaxAge(24 * 60 * 60);
+        response.addCookie(cookie);
+
         return ResponseEntity.ok(Map.of("token", token));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletResponse response) {
+        Cookie cookie = new Cookie("jwt", null);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(24 * 60 * 60);
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok("Logged out successfully");
     }
 }
