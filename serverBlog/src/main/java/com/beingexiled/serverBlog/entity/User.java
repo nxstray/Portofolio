@@ -1,5 +1,8 @@
 package com.beingexiled.serverBlog.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,4 +22,7 @@ public class User {
     private String password;
     
     private String role = "USER";
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts = new ArrayList<>();
 }

@@ -10,16 +10,18 @@ public class Comment {
     private Long id;
 
     private String content;
-    private String postedBy;
 
     @ManyToOne
-    @JoinColumn(name = "post_id", nullable = false)
+    @JoinColumn(name = "post_id")
     private Post post;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
-    // Getter dan Setter untuk id
     public Long getId() {
         return id;
     }
@@ -36,16 +38,6 @@ public class Comment {
         this.content = content;
     }
 
-    // Getter dan Setter untuk postedBy
-    public String getPostedBy() {
-        return postedBy;
-    }
-
-    public void setPostedBy(String postedBy) {
-        this.postedBy = postedBy;
-    }
-
-    // Getter dan Setter untuk post
     public Post getPost() {
         return post;
     }
@@ -54,7 +46,14 @@ public class Comment {
         this.post = post;
     }
 
-    // Getter dan Setter untuk createdAt
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public Date getCreatedAt() {
         return createdAt;
     }

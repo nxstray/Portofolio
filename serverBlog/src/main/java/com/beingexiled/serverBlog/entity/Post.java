@@ -24,8 +24,6 @@ public class Post {
     @Column(length = 5000)
     private String content;
 
-    private String postedBy;
-
     private String img;
 
     private Date date;
@@ -35,7 +33,7 @@ public class Post {
     private List<String> tags;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
 }
