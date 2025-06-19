@@ -1,12 +1,5 @@
 package com.beingexiled.serverBlog.controller;
 
-import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.http.HttpStatus;
-
 import com.beingexiled.serverBlog.dto.PostDTO;
 import com.beingexiled.serverBlog.dto.PostMapper;
 import com.beingexiled.serverBlog.entity.Post;
@@ -14,7 +7,16 @@ import com.beingexiled.serverBlog.service.PostService;
 
 import jakarta.persistence.EntityNotFoundException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -24,35 +26,53 @@ public class PostController {
     @Autowired
     private PostService postService;
 
+    // CREATE
     @PostMapping
     public ResponseEntity<?> createPost(@RequestBody Post post) {
         try {
             Post createdPost = postService.savePost(post);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
+            PostDTO dto = PostMapper.toDTO(createdPost);
+            return ResponseEntity.status(HttpStatus.CREATED).body(dto);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating post: " + e.getMessage());
         }
     }
 
-    @GetMapping
-    public ResponseEntity<List<PostDTO>> getAllPosts() {
+    // UPLOAD IMAGE
+    @PostMapping("/{postId}/upload-image")
+    public ResponseEntity<?> uploadImage(@PathVariable Long postId, @RequestParam("image") MultipartFile imageFile) {
         try {
-            List<PostDTO> postDTOs = postService.getAllPosts()
-                .stream()
-                .map(PostMapper::toDTO)
-                .toList();
-
-            return ResponseEntity.ok(postDTOs);
+            Post updatedPost = postService.uploadImage(postId, imageFile);
+            PostDTO dto = PostMapper.toDTO(updatedPost);
+            return ResponseEntity.ok(dto);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Post not found for id: " + postId);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Image upload failed: " + e.getMessage());
         }
     }
 
+    // READ ALL
+    @GetMapping
+    public ResponseEntity<?> getAllPosts() {
+        try {
+            List<PostDTO> postDTOs = postService.getAllPosts()
+                    .stream()
+                    .map(PostMapper::toDTO)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(postDTOs);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching posts: " + e.getMessage());
+        }
+    }
+
+    // READ BY ID
     @GetMapping("/{postId}")
     public ResponseEntity<?> getPostById(@PathVariable Long postId) {
         try {
             Post post = postService.getPostById(postId);
-            return ResponseEntity.ok(PostMapper.toDTO(post));
+            PostDTO dto = PostMapper.toDTO(post);
+            return ResponseEntity.ok(dto);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Post not found for id: " + postId);
         } catch (Exception e) {
@@ -60,33 +80,42 @@ public class PostController {
         }
     }
 
+    // SEARCH
     @GetMapping("/search/{name}")
     public ResponseEntity<?> searchByName(@PathVariable String name) {
         try {
-            return ResponseEntity.ok(postService.searchByName(name));
+            List<PostDTO> postDTOs = postService.searchByName(name)
+                    .stream()
+                    .map(PostMapper::toDTO)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(postDTOs);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error searching posts: " + e.getMessage());
         }
     }
 
+    // UPDATE
     @PutMapping("/{postId}")
     public ResponseEntity<?> updatePost(@PathVariable Long postId, @RequestBody Post postDetails) {
         try {
-            Post post = postService.getPostById(postId);
+            Post existingPost = postService.getPostById(postId);
 
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String email = authentication.getName();
 
-            if (post.getUser() != null && !post.getUser().getEmail().equals(email)) {
+            if (existingPost.getUser() != null && !existingPost.getUser().getEmail().equals(email)) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to update this post.");
             }
 
-            post.setName(postDetails.getName());
-            post.setContent(postDetails.getContent());
+            existingPost.setName(postDetails.getName());
+            existingPost.setContent(postDetails.getContent());
+            existingPost.setTags(postDetails.getTags());
 
-            return ResponseEntity.ok(postService.savePost(post));
+            Post updated = postService.savePost(existingPost);
+            PostDTO dto = PostMapper.toDTO(updated);
+            return ResponseEntity.ok(dto);
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Post not found: " + e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating post: " + e.getMessage());
         }
