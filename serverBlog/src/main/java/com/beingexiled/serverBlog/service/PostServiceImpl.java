@@ -9,8 +9,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import jakarta.persistence.EntityNotFoundException;
+import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.persistence.EntityNotFoundException;
 
 import java.util.List;
 import java.util.Date;
@@ -41,6 +42,22 @@ public class PostServiceImpl implements PostService {
         post.setUser(user);
         
         return postRepository.save(post);
+    }
+
+    @Override
+    public Post uploadImage(Long postId, MultipartFile imageFile) {
+        Post existingPost = getPostById(postId);
+
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        existingPost.setUser (user);
+
+        String filename = imageFile.getOriginalFilename();
+        existingPost.setImg("/images/" + filename);
+
+        return postRepository.save(existingPost);
     }
 
     public List<Post> getAllPosts() {
