@@ -33,7 +33,7 @@ public class PostController {
             PostDTO dto = PostMapper.toDTO(createdPost);
             return ResponseEntity.status(HttpStatus.CREATED).body(dto);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error create post: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating post: " + e.getMessage());
         }
     }
 
