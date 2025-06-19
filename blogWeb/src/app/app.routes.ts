@@ -33,5 +33,15 @@ export const routes: Routes = [
       import('./search-by-name/search-by-name.component').then(
         (m) => m.SearchByNameComponent
       ),
-  }
+  },
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./login/login.component').then((m) => m.LoginComponent),
+  },
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./register/register.component').then((m) => m.RegisterComponent),
+  },
 ];
