@@ -28,13 +28,6 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'search-by-name',
-    loadComponent: () =>
-      import('./search-by-name/search-by-name.component').then(
-        (m) => m.SearchByNameComponent
-      ),
-  },
-  {
     path: 'login',
     loadComponent: () =>
       import('./login/login.component').then((m) => m.LoginComponent),
