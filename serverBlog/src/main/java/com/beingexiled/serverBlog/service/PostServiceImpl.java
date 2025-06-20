@@ -49,15 +49,25 @@ public class PostServiceImpl implements PostService {
         Post existingPost = getPostById(postId);
 
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmail(email)
+        userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        existingPost.setUser (user);
+        if (!existingPost.getUser().getEmail().equals(email)) {
+            throw new SecurityException("You are not authorized to upload image for this post.");
+        }
 
-        String filename = imageFile.getOriginalFilename();
-        existingPost.setImg("/images/" + filename);
+        try {
+            String filename = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
+            String uploadDir = "uploads/";
+            java.nio.file.Path filePath = java.nio.file.Paths.get(uploadDir + filename);
+            java.nio.file.Files.createDirectories(filePath.getParent());
+            java.nio.file.Files.write(filePath, imageFile.getBytes());
 
-        return postRepository.save(existingPost);
+            existingPost.setImg("/uploads/" + filename);
+            return postRepository.save(existingPost);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to upload image", e);
+        }
     }
 
     public List<Post> getAllPosts() {
