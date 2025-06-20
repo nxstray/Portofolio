@@ -1,10 +1,52 @@
 .center-card {
-    max-width: 600px;
-    margin: 0 auto;
-    margin-top: 10px;
-    padding: 30px;
+  max-width: 500px;
+  background-color: #ae1e1e11;
+  margin: 10px auto 40px;
+  padding: 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 25px;
 }
 
-mat-form-field {
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.upload-box {
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 16px;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: #3f51b5;
+  }
+
+  mat-icon {
+    font-size: 40px;
+    color: #888;
+  }
+
+  p {
+    margin: 8px 0;
+    color: #666;
+    font-weight: 500;
+  }
+
+  span {
+    display: block;
+    margin-top: 8px;
+    font-size: 14px;
+    color: #333;
+  }
+}
+
+.form-create {
+    color: #3f51b5;
+    background-color: #666;
     width: 100%;
+    margin-bottom: 16px;
 }
