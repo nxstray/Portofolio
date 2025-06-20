@@ -29,36 +29,44 @@ import { PostService } from '../../service/post.service';
   styleUrls: ['./create-post.component.scss']
 })
 export class CreatePostComponent {
-  postForm! : FormGroup;
+  postForm!: FormGroup;
   tags: string[] = [];
+  selectedImageFile: File | null = null;
 
-  constructor(private fb : FormBuilder,
+  constructor(
+    private fb: FormBuilder,
     private router: Router,
     private snackBar: MatSnackBar,
-    private postService: PostService) {}
+    private postService: PostService
+  ) {}
 
   ngOnInit() {
     this.postForm = this.fb.group({
       name: [null, Validators.required],
       content: [null, [Validators.required, Validators.maxLength(5000)]],
-      img: [null, Validators.required],
       postedBy: [null, Validators.required]
-    })
+    });
   }
 
-  add(event:any) {
+  add(event: any) {
     const value = (event.value || '').trim();
     if (value) {
       this.tags.push(value);
     }
-
     event.chipInput!.clear();
   }
 
-  remove(tag:any) {
+  remove(tag: any) {
     const index = this.tags.indexOf(tag);
     if (index >= 0) {
       this.tags.splice(index, 1);
+    }
+  }
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedImageFile = file;
     }
   }
 
@@ -67,13 +75,27 @@ export class CreatePostComponent {
     data.tags = this.tags;
 
     this.postService.createNewPost(data).subscribe({
-      next: (res) => {
-        this.snackBar.open('Post created successfully!', 'Close', { duration: 3000 });
-        this.router.navigateByUrl('/');
+      next: (createdPost) => {
+        if (this.selectedImageFile) {
+          this.postService.uploadImage(createdPost.id, this.selectedImageFile).subscribe({
+            next: () => {
+              this.snackBar.open('Post and image uploaded successfully!', 'Close', { duration: 3000 });
+              this.router.navigateByUrl('/');
+            },
+            error: (err) => {
+              this.snackBar.open('Post created, but failed to upload image.', 'Close', { duration: 3000 });
+              console.error('Image upload failed:', err);
+              this.router.navigateByUrl('/');
+            }
+          });
+        } else {
+          this.snackBar.open('Post created successfully!', 'Close', { duration: 3000 });
+          this.router.navigateByUrl('/');
+        }
       },
       error: (err) => {
         this.snackBar.open('Error creating post.', 'Close', { duration: 3000 });
-        console.error('Error creating post:', err, { duration: 3000});
+        console.error('Error creating post:', err);
       }
     });
   }
