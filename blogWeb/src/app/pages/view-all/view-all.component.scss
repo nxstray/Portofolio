@@ -1,25 +1,47 @@
 .card-container {
-    margin: 16px;
-    max-width: 60%;
-    padding-bottom: 30px;
+  margin: 16px auto;
+  max-width: 60%;
+  padding-bottom: 30px;
 }
 
 mat-card {
-    padding: 10px;
+  padding: 10px;
+  margin: 0 auto;
+  background-color: #ededf88f;
+  font-family: 'Reddit Sans', sans-serif;
 }
 
-.example-header-image { 
-    background-image: url('https://angular.io/assets/images/logos/angular/angular.png');
-    background-size: cover;
+mat-card-header {
+  font-family: 'Reddit Sans', sans-serif;
+
+  .mat-mdc-card-title,
+  .mat-mdc-card-subtitle {
+    color: #4a75ff;
+    font-family: 'Reddit Sans', sans-serif;
+  }
+}
+
+mat-card-content:last-child {
+  font-family: 'Reddit Sans', sans-serif;
 }
 
 mat-card-footer {
-    margin-left: 20px;
+  margin-left: 20px;
 }
 
 .post-img {
-    width: 300px;
-    height: 200px;
-    object-fit: cover;
-    margin-top: 15px;
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
+  margin-top: 15px;
+}
+
+.mat-mdc-raised-button > .mat-icon {
+  color: #8acf73;
+}
+
+::ng-deep .mat-mdc-raised-button:not(:disabled) {
+  background-color: #ffffff5e !important;
+  color: #8acf73 !important;
+  font-family: 'Reddit Sans', sans-serif;
 }
