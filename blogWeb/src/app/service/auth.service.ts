@@ -7,7 +7,6 @@ import { BehaviorSubject, Observable, catchError, tap, throwError } from 'rxjs';
 })
 export class AuthService {
   private apiUrl = 'http://localhost:9090/api/auth';
-
   private loggedIn = new BehaviorSubject<boolean>(false);
   isLoggedIn$ = this.loggedIn.asObservable();
 
@@ -24,7 +23,9 @@ export class AuthService {
   }
 
   signUp(email: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/signup`, { email, password });
+    return this.http.post(`${this.apiUrl}/signup`, { email, password }, { withCredentials: true }).pipe(
+      catchError((err) => throwError(() => err))
+    );
   }
 
   checkLoginStatus(): void {
