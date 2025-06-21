@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from './guards/guards.component';
 
 export const routes: Routes = [
   {
@@ -12,6 +13,7 @@ export const routes: Routes = [
       import('./pages/create-post/create-post.component').then(
         (m) => m.CreatePostComponent
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: 'view-all',
@@ -35,7 +37,9 @@ export const routes: Routes = [
   {
     path: 'auth/forgot-password',
     loadComponent: () =>
-      import('./auth/forgot-password/forgot-password.component').then((m) => m.ForgotPasswordComponent),
+      import('./auth/forgot-password/forgot-password.component').then(
+        (m) => m.ForgotPasswordComponent
+      ),
   },
   {
     path: 'auth/signup',
