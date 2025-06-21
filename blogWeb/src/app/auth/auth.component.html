@@ -1,37 +1,28 @@
 <div class="auth-wrapper">
   <mat-card>
     <h2>Log in</h2>
-
-    <div class="social-login">
-      <button mat-stroked-button>
-        <mat-icon>account_circle</mat-icon>&nbsp;Continue with Google
-      </button>
-      <button mat-stroked-button>
-        <mat-icon>apple</mat-icon>&nbsp;Continue with Apple
-      </button>
-    </div>
-
-    <div class="divider">OR</div>
+    <br>
+    <br>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <mat-form-field appearance="outline">
-        <mat-label>Email or Username</mat-label>
-        <input matInput formControlName="email" required />
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email or username</mat-label>
+        <input matInput formControlName="email" type="email" required />
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="full-width">
         <mat-label>Password</mat-label>
-        <input matInput type="password" formControlName="password" required />
+        <input matInput formControlName="password" type="password" required />
       </mat-form-field>
 
-      <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">
-        Log in
+      <button mat-raised-button color="primary" type="submit" class="full-width" [disabled]="!loginForm.valid">
+        {{ isLoginMode ? 'Log in' : 'Sign Up' }}
       </button>
     </form>
 
     <div class="auth-links">
-      <a routerLink="/forgot-password">Forgot password?</a>
-      <a routerLink="/register">Sign up</a>
+      <a href="#">Forgot password?</a>
+      <a href="#" (click)="toggleMode()">Sign Up</a>
     </div>
   </mat-card>
 </div>
