@@ -24,8 +24,16 @@ export class AuthService {
 
   signUp(email: string, password: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/signup`, { email, password }, { withCredentials: true }).pipe(
-      catchError((err) => throwError(() => err))
+      tap(() => this.loggedIn.next(true)),
+      catchError((err) => {
+        this.loggedIn.next(false);
+        return throwError(() => err);
+      })
     );
+  }
+
+  resetPassword(email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/reset-password`, { email }, { withCredentials: true });
   }
 
   checkLoginStatus(): void {
