@@ -1,44 +1,113 @@
 .card-container {
-    margin: 16px;
-    max-width: 60%;
-    padding-bottom: 30px;
+  margin: 16px auto;
+  max-width: 60%;
+  padding-bottom: 30px;
 }
 
 mat-card {
-    padding: 10px;
+  padding: 10px;
+  margin: 0 auto;
+  background-color: #ededf88f;
+  font-family: 'Reddit Sans', sans-serif;
 }
 
-.example-header-image { 
-    background-image: url('https://angular.io/assets/images/logos/angular/angular.png');
-    background-size: cover;
+mat-card-header {
+  font-family: 'Reddit Sans', sans-serif;
+
+  .mat-mdc-card-title,
+  .mat-mdc-card-subtitle {
+    color: #4a75ff;
+    font-family: 'Reddit Sans', sans-serif;
+  }
 }
 
-mat-card-content {
-    margin-top: 10px;
+mat-card-content:last-child {
+  font-family: 'Reddit Sans', sans-serif;
+  margin-top: 10px;
 }
 
 mat-card-footer {
-    margin-left: 20px;
+  margin-left: 20px;
 }
 
 .img {
-    object-fit: cover;
+  object-fit: cover;
+  width: 300px;
+  height: 200px;
+  margin-top: 15px;
 }
 
 .comment-card {
-    margin-top: 20px;
+  max-width: 500px;
+  background-color: #ffffff;
+  margin: 10px auto 40px;
+  padding: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 25px;
+  font-family: 'Reddit Sans', sans-serif;
+
+  h4 {
+    color: #4a75ff;
+    font-family: 'Reddit Sans', sans-serif;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  ::ng-deep form {
+    .mat-mdc-form-field {
+      font-family: 'Reddit Sans', sans-serif;
+      width: 100%;
+      margin-bottom: 16px;
+    }
+
+    mat-label {
+      color: #4a75ff !important;
+      font-weight: 400;
+    }
+
+    .mdc-floating-label--required:not(.mdc-floating-label--hide-required-marker)::after {
+      content: '' !important;
+    }
+
+    .mat-mdc-text-field-wrapper {
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    .mat-mdc-form-field-flex {
+      background-color: #ffffff !important;
+    }
+
+    .mat-mdc-form-field-infix,
+    input.mat-mdc-input-element,
+    textarea.mat-mdc-input-element {
+      font-family: 'Reddit Sans', sans-serif !important;
+      color: #2b2a35 !important;
+    }
+  }
+
+  ::ng-deep input.mat-mdc-input-element,
+  ::ng-deep textarea.mat-mdc-input-element {
+    color: #2b2a35;
+    font-family: 'Reddit Sans', sans-serif;
+    font-size: 15px;
+    padding: 0 10px;
+  }
+
+  ::ng-deep button.mat-mdc-raised-button:not(:disabled) {
+    color: #4a75ff !important;
+    background-color: #e0e0e0d4 !important;
+    font-family: 'Reddit Sans', sans-serif;
+    font-weight: bold;
+  }
 }
 
-mat-card-field { 
-    width: 100%;
+.mat-mdc-raised-button > .mat-icon {
+  color: #8acf73;
 }
 
-.comment-card form {
-  display: flex;
-  flex-direction: column;
-}
-
-.comment-card mat-form-field {
-  width: 100%;
-  margin-bottom: 16px;
+::ng-deep .mat-mdc-raised-button:not(:disabled) {
+  background-color: #ffffff5e !important;
+  color: #8acf73 !important;
+  font-family: 'Reddit Sans', sans-serif;
 }

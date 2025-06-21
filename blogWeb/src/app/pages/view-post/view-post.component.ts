@@ -15,6 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-view-post',
+  standalone: true,
   imports: [
     CommonModule,
     MatCardModule,
