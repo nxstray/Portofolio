@@ -13,7 +13,7 @@ import { RouterModule } from '@angular/router';
   selector: 'app-forgot-password',
   standalone: true,
   templateUrl: './forgot-password.component.html',
-  styleUrls: ['../auth.component.scss'],
+  styleUrls: ['./forgot-password.component.scss'],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -36,20 +36,21 @@ export class ForgotPasswordComponent implements OnInit {
 
   ngOnInit(): void {
     this.resetForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]]
+      emailOrUsername: ['', [Validators.required]]
     });
   }
 
   onSubmit(): void {
     if (!this.resetForm.valid) return;
 
-    const { email } = this.resetForm.value;
-    this.authService.resetPassword(email).subscribe({
+    const { emailOrUsername } = this.resetForm.value;
+
+    this.authService.resetPassword(emailOrUsername).subscribe({
       next: () => {
         this.submitted = true;
         setTimeout(() => this.router.navigateByUrl('/auth'), 3000);
       },
-      error: (err: any) => alert(err.error || 'Reset failed.')
+      error: (err: any) => alert(err.error || 'Failed to send reset link.')
     });
   }
 }
