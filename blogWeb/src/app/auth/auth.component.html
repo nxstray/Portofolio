@@ -1,8 +1,6 @@
 <div class="auth-wrapper">
   <mat-card>
     <h2>Log in</h2>
-    <br>
-    <br>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <mat-form-field appearance="outline" class="full-width">
@@ -16,13 +14,13 @@
       </mat-form-field>
 
       <button mat-raised-button color="primary" type="submit" class="full-width" [disabled]="!loginForm.valid">
-        {{ isLoginMode ? 'Log in' : 'Sign Up' }}
+        Log in
       </button>
     </form>
 
     <div class="auth-links">
-      <a href="#">Forgot password?</a>
-      <a href="#" (click)="toggleMode()">Sign Up</a>
+      <a routerLink="/auth/forgot-password">Forgot password?</a>
+      <a routerLink="/auth/signup">Sign up</a>
     </div>
   </mat-card>
 </div>
