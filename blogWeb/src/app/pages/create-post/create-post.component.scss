@@ -1,10 +1,53 @@
+:host {
+  font-family: 'Reddit Sans', sans-serif;
+}
+
 .center-card {
   max-width: 500px;
-  background-color: #ae1e1e11;
+  background-color: #ffffff;
   margin: 10px auto 40px;
   padding: 30px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border-radius: 25px;
+  font-family: 'Reddit Sans', sans-serif;
+
+  ::ng-deep form {
+    .mat-mdc-form-field {
+      font-family: 'Reddit Sans', sans-serif;
+    }
+
+    mat-label {
+      color: #4a75ff !important;
+      font-weight: 400;
+    }
+
+    .mdc-floating-label--required:not(.mdc-floating-label--hide-required-marker)::after {
+      content: '' !important;
+    }
+
+    .mat-mdc-text-field-wrapper {
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    .mat-mdc-form-field-flex {
+      background-color: #ffffff !important;
+    }
+
+    .mat-mdc-form-field-infix,
+    input.mat-mdc-input-element,
+    textarea.mat-mdc-input-element {
+      font-family: 'Reddit Sans', sans-serif !important;
+      color: #2b2a35 !important;
+    }
+  }
+}
+
+::ng-deep input.mat-mdc-input-element {
+  color: #2b2a35;
+  font-family: 'Reddit Sans', sans-serif;
+  font-size: 15px;
+  padding: 0 10px;
 }
 
 .full-width {
@@ -13,7 +56,7 @@
 }
 
 .upload-box {
-  border: 2px dashed #ccc;
+  border: 2px dashed #b1b3e1;
   border-radius: 8px;
   padding: 20px;
   text-align: center;
@@ -22,7 +65,7 @@
   transition: border-color 0.2s;
 
   &:hover {
-    border-color: #3f51b5;
+    border-color: #4a75ff;
   }
 
   mat-icon {
@@ -45,8 +88,10 @@
 }
 
 .form-create {
-    color: #3f51b5;
-    background-color: #666;
-    width: 100%;
-    margin-bottom: 16px;
+  color: #4a75ff;
+  background-color: #e0e0e0d4;
+  width: 100%;
+  margin-bottom: 16px;
+  font-family: 'Reddit Sans', sans-serif;
+  font-weight: bold;
 }
