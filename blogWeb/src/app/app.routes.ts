@@ -32,4 +32,14 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./auth/auth.component').then((m) => m.AuthComponent),
   },
+  {
+    path: 'auth/forgot-password',
+    loadComponent: () =>
+      import('./auth/forgot-password/forgot-password.component').then((m) => m.ForgotPasswordComponent),
+  },
+  {
+    path: 'auth/signup',
+    loadComponent: () =>
+      import('./auth/signup/signup.component').then((m) => m.SignupComponent),
+  },
 ];
