@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../service/auth.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -21,11 +22,11 @@ import { AuthService } from '../service/auth.service';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    RouterModule
   ]
 })
 export class AuthComponent implements OnInit {
-  isLoginMode = true;
   loginForm!: FormGroup;
 
   constructor(
@@ -41,21 +42,14 @@ export class AuthComponent implements OnInit {
     });
   }
 
-  toggleMode(): void {
-    this.isLoginMode = !this.isLoginMode;
-  }
-
   onSubmit(): void {
     if (!this.loginForm.valid) return;
 
     const { email, password } = this.loginForm.value;
-    const authObs = this.isLoginMode
-      ? this.authService.signIn(email!, password!)
-      : this.authService.signUp(email!, password!);
 
-    authObs.subscribe({
+    this.authService.signIn(email, password).subscribe({
       next: () => this.router.navigateByUrl('/'),
-      error: (err: any) => alert(err.error)
+      error: (err: any) => alert(err.error || 'Login failed.')
     });
   }
 }
